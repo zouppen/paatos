@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+$url = $argv[1];
+
+// Deduce which template to use
+$templates = [
+    'helsinki-hacklab' => 'https://wiki-dev.helsinki.hacklab.fi/',
+];
+
+for (;;) {
+    foreach ($templates as $template => $baseurl) {
+        if (str_starts_with($url, $baseurl)) {
+            break 2;
+        }
+    }
+    die("Unable to deduce which template to use for given URL\n");
+}
+
+// Validate template
+$templatedir = __DIR__.'/templates/'.$template;
+if (!is_dir($templatedir)) {
+    die("Template not found at $templatedir\n");
+}
+
+// Now continue to the template handler
+require($templatedir.'/process.php');
