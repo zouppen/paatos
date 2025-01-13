@@ -42,11 +42,9 @@ foreach ($ugly_divs as $ugly_div) {
     }
     // Move content from the divs to the parent
     $par = $ugly_div->parentNode;
-    print("hip\n");
     while (true) {
         $child = $ugly_div->firstChild;
         if ($child === null) break;
-        print("hep\n");
         $par->insertBefore($child, $ugly_div);
     }
     // And remove the former parent element
