@@ -1,6 +1,10 @@
 # paatos
 Document generator for meeting minutes
 
+## Dependencies
+
+TODO. Pandoc, texlive, php-cli et cetera.
+
 ## License
 
 This program is free software: you can redistribute it and/or modify
