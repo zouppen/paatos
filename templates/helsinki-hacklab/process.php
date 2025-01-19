@@ -51,6 +51,49 @@ foreach ($ugly_divs as $ugly_div) {
     $par->removeChild($ugly_div);
 }
 
+// Footnote inliner
+$footnotes = $xpath->query("//*[@class='fn']");
+foreach ($footnotes as $footnote) {
+    // Get link and contents
+    $link = @$xpath->query(".//@href", $footnote)[0]->value;
+    $payload = @$xpath->query(".//*[@class='content']", $footnote)[0];
+
+    if ($link === null || $payload === null) {
+        // Maybe non-fatal, but not sure. Printing.
+        print("Footnote found but we aren't able to parse it\n");
+        continue;
+    }
+    // Remove hash
+    $id = substr($link, 1);
+
+    // Reformat the tag as span
+    $span = $doc->createElement('span');
+    $span->setAttribute('class', 'fn');
+    while (true) {
+        $child = $payload->firstChild;
+        if ($child === null) break;
+        $span->append($child);
+    }
+
+    // Replace the reference
+    $home = $doc->getElementById($id);
+    if ($home === null) {
+        // Maybe non-fatal, but not sure. Printing.
+        print("Footnote found ($link) but not the element it was referred from\n");
+        continue;
+    }
+    $sup = $home->parentNode;
+    if ($sup->nodeName !== 'sup') {
+        // Maybe non-fatal, but not sure. Printing.
+        print("Footnote reference not in superscript.\n");
+        continue;
+    }
+    $sup->replaceWith($span);
+
+    // Clear footnote (TODO maybe remove div as well)
+    $footnote->textContent = '';
+}
+
 // Let's mangle with Pandoc
 $fds = [
     0 => ['pipe', 'r'],
@@ -70,7 +113,7 @@ if (!chdir(__DIR__)) {
     die("Unable to chdir to template directory\n");
 }
 
-$res = proc_open("pandoc -f html --shift-heading-level-by=-1 -H header.tex -B before.tex --metadata-file=metadata.yaml -o $esc_outfile", $fds, $pipes);
+$res = proc_open("pandoc -f html --shift-heading-level-by=-1 -H header.tex -B before.tex --metadata-file=metadata.yaml -F filter -o $esc_outfile", $fds, $pipes);
 if ($res === false) {
     die("Unable to run pandoc\n");
 }

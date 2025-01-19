@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+
+$json = stream_get_contents(STDIN);
+if ($json === false) {
+    die("Filter failed: no content\n");
+}
+$o = json_decode($json, true);
+if ($o === null) {
+    die("Filter failed: not JSON content\n");
+}
+
+// Let's find Dokuwiki footnotes
+$iter = function(&$o) use (&$iter) {
+    foreach ($o as &$v) {
+        if (!is_array($v)) {
+            continue;
+        }
+        $typ = @$v['t'];
+        $cls = @$v['c'][0][1];
+
+        if ($typ === 'Span' && is_array($cls) && in_array('fn', $cls, true)) {
+            // Change from Span to Note
+            $v['t'] = 'Note';
+            $v['c'] = [[
+                't' => 'Para',
+                'c' => $v['c'][1],
+            ]];
+        }
+
+        // Keep recursing
+        $iter($v);
+    }
+};
+$iter($o);
+
+print(json_encode($o));
