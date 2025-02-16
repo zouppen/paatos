@@ -2,6 +2,7 @@
 <?php
 
 $url = $argv[1];
+$outfile = "/tmp/pk.pdf";
 
 // Deduce which template to use
 $templates = [
@@ -25,3 +26,5 @@ if (!is_dir($templatedir)) {
 
 // Now continue to the template handler
 require($templatedir.'/process.php');
+
+print("Wrote output to $outfile\n");

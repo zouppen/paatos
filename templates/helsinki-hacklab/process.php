@@ -112,7 +112,6 @@ $fds = [
 // directory.
 
 // File must exist to resolve unlike in Unix. So, touching.
-$outfile = "/tmp/pk.pdf";
 touch($outfile);
 $esc_outfile = escapeshellarg(realpath($outfile));
 
