@@ -51,6 +51,13 @@ foreach ($ugly_divs as $ugly_div) {
     $par->removeChild($ugly_div);
 }
 
+// Table right-align hack, force Dokuwiki CSS to inline style before
+// Pandoc. NB! Not a fully specs-conforming class parser!
+$right_aligns = $xpath->query("//*[contains(concat(' ', @class, ' '), ' rightalign ')]");
+foreach ($right_aligns as $el) {
+    $el->setAttribute('align', 'right');
+}
+
 // Footnote inliner
 $footnotes = $xpath->query("//*[@class='fn']");
 foreach ($footnotes as $footnote) {
