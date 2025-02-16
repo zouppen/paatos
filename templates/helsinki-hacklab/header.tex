@@ -39,6 +39,7 @@
 
 % Fix the utterly broken tables. Align text vertically to the top and
 % never span
+\providecommand{\multirow}{}
 \let\oldmultirow\multirow
 \renewcommand{\multirow}[2]{
   \oldmultirow[t]{#1}{*}
