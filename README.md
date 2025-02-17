@@ -1,4 +1,5 @@
 # paatos
+
 Document generator for meeting minutes
 
 ## Requirements
@@ -28,7 +29,7 @@ TODO
 
 1. Steal cookies from your browser and place them to `cookies.txt`
 in this directory. Use a browser add-on instructed above.
-2. Run `./render-minutes URL` where URL is the link to the document page (internal wiki)
+2. Run `./render-minutes URL` where URL is a link to the document page (internal wiki)
 3. Document is produced. Enjoy!
 
 ## License
