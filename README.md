@@ -10,13 +10,13 @@ Way to steal cookies from a browser. For Firefox, install
 ### Fedora
 
 ```sh
-sudo dnf install pandoc php-cli php-xml texlive-multirow
+sudo dnf install pandoc php-cli php-xml texlive-multirow 
 ```
 
 ### Debian
 
 ```sh
-sudo apt install pandoc php-cli php-xml texlive-latex-extra
+sudo apt install pandoc php-cli php-xml texlive-latex-extra php-curl
 ```
 
 TODO Verify if there are additional requirements
